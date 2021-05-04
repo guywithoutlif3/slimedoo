@@ -1,5 +1,5 @@
 # Slimedoo Task List
 
-- [ ]  `git config --global user.email "you@example.com"`
-- [ ]  `git config --global user.name "Your Name"`
-- [] PHP intellisense (lint)
+- [] Further more understanding of the concept and the Code (:
+- [] Switch from TestDB -> slimdoo
+- [] Add / Insert routing to Database
