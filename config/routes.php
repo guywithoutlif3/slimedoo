@@ -5,7 +5,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
 
+
 return function (App $app) {
+
+   
     $app->get('/', function (
         ServerRequestInterface $request,
         ResponseInterface $response
@@ -131,7 +134,9 @@ return function (App $app) {
     });
 
     $app->get("/foo", function ($request, $response) {
-        $response->getBody()->write(json_encode($this->get('session')));
+        //$this->get('session')->set('userid', 'slimedoo');
+        //$this->get('session')->save();
+        //$response->getBody()->write(json_encode($this->get('session')->all()));
         return $response;
     });  
   

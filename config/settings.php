@@ -1,5 +1,6 @@
 <?php
 
+
 // Should be set to 0 in production
 error_reporting(E_ALL);
 
@@ -16,11 +17,8 @@ $settings = [];
 $settings['root'] = dirname(__DIR__);
 $settings['temp'] = $settings['root'] . '/tmp';
 $settings['public'] = $settings['root'] . '/public';
-// Session
-$settings['session'] = [
-    'name' => 'slimedoo',
-    'cache_expire' => 0,
-];
+
+
 // Error Handling Middleware settings
 $settings['error'] = [
 
@@ -36,4 +34,8 @@ $settings['error'] = [
     'log_error_details' => true,
 ];
 
+$settings['session'] = [
+    'name' => 'slimedoo',
+    'cache_expire' => 0,
+];
 return $settings;
