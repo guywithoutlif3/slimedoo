@@ -14,6 +14,7 @@ $containerBuilder->addDefinitions(__DIR__ . '/container.php');
 
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
+//Session
 
 // Set database as the name of Medoo service.
 $container->set('database', function () {

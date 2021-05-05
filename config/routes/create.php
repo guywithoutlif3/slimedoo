@@ -28,22 +28,24 @@ return function (App $app) {
         return $response;
     });
     //routing which is responsible for the adding of users
-    $app->get('/users/add/{username}/{prename}/{lastname}/{password}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
-        $username = $args['username'];
-        $prename = $args['prename'];
-        $lastname = $args['lastname'];
-        $password = $args['password'];
+    //curl -X POST -F 'username=cptrio -F 'prename=Yves' -F 'lastname=huber' -F 'password=imdumblmao' 'http://10.80.4.43/users/add'
 
-        $this->get('database')->insert(
-            'user',
-            [
-                'username' => $username,
-                'prename' => $prename,
-                'lastname' => $lastname,
-                'password' => $password
-            ]
-        );
-        $response->getBody()->write("user has been inserted");
+    $app->post('/users/add', function (ServerRequestInterface $request, ResponseInterface $response) {
+        $data = $request->getParsedBody();
+        if (isset($data['username']) && isset($data['prename']) && isset($data['lastname']) && isset($data['password'])) {
+            $this->get('database')->insert(
+                'user',
+                [
+                    'username' => $data['username'],
+                    'prename' => $data['prename'],
+                    'lastname' => $data['lastname'],
+                    'password' => $data['password']
+                ]
+            );
+            $response->getBody()->write("user has been inserted");
+        } else {
+            $response->getBody()->write("im missing smt");
+        }
         return $response;
     });
 };
