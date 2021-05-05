@@ -30,8 +30,10 @@ $container->set('database', function () {
 $app = $container->get(App::class);
 
 // Register routes
-(require __DIR__ . '/routes.php')($app);
-
+(require __DIR__ . '/routes/routes.php')($app); 
+(require __DIR__ . '/routes/create.php')($app);
+(require __DIR__ . '/routes/delete.php')($app);
+(require __DIR__ . '/routes/select.php')($app);
 // Register middleware
 (require __DIR__ . '/middleware.php')($app);
 
