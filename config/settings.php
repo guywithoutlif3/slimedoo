@@ -16,7 +16,11 @@ $settings = [];
 $settings['root'] = dirname(__DIR__);
 $settings['temp'] = $settings['root'] . '/tmp';
 $settings['public'] = $settings['root'] . '/public';
-
+// Session
+$settings['session'] = [
+    'name' => 'slimedoo',
+    'cache_expire' => 0,
+];
 // Error Handling Middleware settings
 $settings['error'] = [
 
