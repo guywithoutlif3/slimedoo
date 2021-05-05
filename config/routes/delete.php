@@ -20,8 +20,27 @@ return function (App $app) {
         $response->getBody()->write("user: $parameter has been deleted");
         return $response;
     });
-
+// TODO: take userid from session : '/messages/delete/all'
+    //$user = $_SESSION[ûser^]
     //routing which is responsible for the deleting of messages with id of message used as parameter
+    $app->get('/messages/delete/all', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+        $user = $this->get("session")["user"];
+        if(isset($user)){
+            $this->get('database')->delete(
+                "message",
+                [
+                    'userIDfs' =>$user 
+                ]
+            );
+            $response->getBody()->write("messages from userid:" ,$this->get("session")["user"]," has been deleted");
+        }else{
+            $response->getBody()->write("your not logged in");
+        }
+       
+   
+        return $response;
+    });
+  /*  //routing which is responsible for the deleting of messages with id of message used as parameter
     $app->get('/messages/delete/{parameter}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
         $parameter = $args['parameter'];
 
@@ -33,22 +52,9 @@ return function (App $app) {
         $response->getBody()->write("message with id $parameter has been deleted");
         return $response;
     });
-    // TODO: take userid from session : '/messages/delete/all'
-    //$user = $_SESSION[ûser^]
+    */
     //routing which is responsible for the deleting of messages with id of message used as parameter
-    $app->get('/messages/delete/{user}/all', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
-        $user = $args['user'];
-        $this->get('database')->delete(
-            "message",
-            [
-                'userIDfs' => $user
-            ]
-        );
-        $response->getBody()->write("messages from userid: $user has been deleted");
-        return $response;
-    });
-    //routing which is responsible for the deleting of messages with id of message used as parameter
-    $app->get('/messages/delete/{user}/{messageid}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $app->get('/messages/delete/{messageid}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
         $user = $args['user'];
         $user = $_SESSION['userid'];
         $messageid = $args['messageid'];
@@ -56,11 +62,11 @@ return function (App $app) {
         $this->get('database')->delete(
             "message",
             [
-                'userIDfs' => $user,
+                'userIDfs' => $this->get("session")["user"],
                 'messageID' => $messageid
             ]
         );
-        $response->getBody()->write("message with id $messageid and from userid: $user has been deleted");
+        $response->getBody()->write("message with id $messageid and from userid:" ,$this->get("session")["user"]," has been deleted");
         return $response;
     });
 };

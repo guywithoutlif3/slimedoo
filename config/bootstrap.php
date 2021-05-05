@@ -29,12 +29,26 @@ $container->set('database', function () {
 
 // Create App instance
 $app = $container->get(App::class);
+$app->add(
+    new \Slim\Middleware\Session([
+      'name' => 'dummy_session',
+      'autorefresh' => true,
+      'lifetime' => '1 hour',
+    ])
+  );
+
+// Register globally to app
+$container->set('session', function () {
+  return new \SlimSession\Helper();
+});
+
 
 // Register routes
 (require __DIR__ . '/routes/routes.php')($app); 
 (require __DIR__ . '/routes/create.php')($app);
 (require __DIR__ . '/routes/delete.php')($app);
 (require __DIR__ . '/routes/select.php')($app);
+(require __DIR__ . '/routes/login.php')($app);
 // Register middleware
 (require __DIR__ . '/middleware.php')($app);
 
