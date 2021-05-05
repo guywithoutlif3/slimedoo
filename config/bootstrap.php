@@ -19,7 +19,7 @@ $container->set('database', function () {
     return new Medoo([
         'type' => 'mysql',
         'host' => 'localhost',
-        'database' => 'dbtest',
+        'database' => 'slimedoo',
         'username' => 'root',
         'password' => 'manager'
     ]);
