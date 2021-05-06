@@ -7,6 +7,7 @@ use Slim\App;
 
 
 return function (App $app) {
+
     //routing which is responsible for the deleting of users either with ID or username (foreign key is on cascading so it deletes also all coresponding messages) 
     $app->get('/users/delete/{parameter}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
         $parameter = $args['parameter'];
@@ -20,27 +21,26 @@ return function (App $app) {
         $response->getBody()->write("user: $parameter has been deleted");
         return $response;
     });
-// TODO: take userid from session : '/messages/delete/all'
-    //$user = $_SESSION[ûser^]
     //routing which is responsible for the deleting of messages with id of message used as parameter
     $app->get('/messages/delete/all', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
-        $user = $this->get("session")["user"];
-        if(isset($user)){
+        $session =  new \SlimSession\Helper();
+        $user = $session->get("user");
+        if (isset($user)) {
             $this->get('database')->delete(
                 "message",
                 [
-                    'userIDfs' =>$user 
+                    'userIDfs' => $user
                 ]
             );
-            $response->getBody()->write("messages from userid:" ,$this->get("session")["user"]," has been deleted");
-        }else{
+            $response->getBody()->write("messages from userid:", $this->get("session")["user"], " has been deleted");
+        } else {
             $response->getBody()->write("your not logged in");
         }
-       
-   
+
+
         return $response;
     });
-  /*  //routing which is responsible for the deleting of messages with id of message used as parameter
+    /*  //routing which is responsible for the deleting of messages with id of message used as parameter
     $app->get('/messages/delete/{parameter}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
         $parameter = $args['parameter'];
 
@@ -55,18 +55,18 @@ return function (App $app) {
     */
     //routing which is responsible for the deleting of messages with id of message used as parameter
     $app->get('/messages/delete/{messageid}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
-        $user = $args['user'];
-        $user = $_SESSION['userid'];
+        $session =  new \SlimSession\Helper();
+        $user = $session->get("user");
         $messageid = $args['messageid'];
 
         $this->get('database')->delete(
             "message",
             [
-                'userIDfs' => $this->get("session")["user"],
+                'userIDfs' => $user,
                 'messageID' => $messageid
             ]
         );
-        $response->getBody()->write("message with id $messageid and from userid:" ,$this->get("session")["user"]," has been deleted");
+        $response->getBody()->write("message with id $messageid and from userid:", $this->get("session")["user"], " has been deleted");
         return $response;
     });
 };

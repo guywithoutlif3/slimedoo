@@ -6,16 +6,30 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
 
 
+
 return function (App $app) {
-    //routing to get all messages
+    //routing to get all messages from logged in user
     $app->get('/messages', function (ServerRequestInterface $request, ResponseInterface $response) {
-        
-        $data = $this->get('database')->select('message', ['message', 'created', 'userIDfs']);
+        $session =  new \SlimSession\Helper();
+        $userid = $session->get("user");
+        $data = $this->get('database')->select(
+            'message',
+            [
+                'message',
+                'created',
+                'userIDfs'
+            ],
+            [
+                'userIDfs' => $userid
+            ]
+        );
         $response->getBody()->write(json_encode($data));
         return $response;
+       
     });
     //routing to get all messages sent from a user with the userIDfs
     $app->get('/messages/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+
         $userid = $args['id'];
         $data = $this->get('database')->select(
             'message',
@@ -37,5 +51,4 @@ return function (App $app) {
         $response->getBody()->write(json_encode($data));
         return $response;
     });
-
 };
