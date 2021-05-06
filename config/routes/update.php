@@ -46,7 +46,7 @@ return function (App $app) {
             $this->get('database')->update(
                 'user',
                 [
-                    'password' => $data['password']
+                    'password' => hash('ripemd160',$data['password'])
 
                 ],
                 [

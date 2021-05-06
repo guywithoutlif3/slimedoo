@@ -27,9 +27,10 @@ return function (App $app) {
         }
         return $response;
     });
-    //routing which is responsible for the adding of users
-    //curl -X POST -F 'username=cptrio -F 'prename=Yves' -F 'lastname=huber' -F 'password=imdumblmao' 'http://10.80.4.43/users/add'
 
+
+    //routing which is responsible for the adding of users
+    //curl -X POST -F 'username=cptrio' -F 'prename=Yves' -F 'lastname=huber' -F 'password=imdumblmao' 'http://10.80.4.43/users/add'
     $app->post('/users/add', function (ServerRequestInterface $request, ResponseInterface $response) {
         $data = $request->getParsedBody();
         if (isset($data['username']) && isset($data['prename']) && isset($data['lastname']) && isset($data['password'])) {
@@ -39,7 +40,7 @@ return function (App $app) {
                     'username' => $data['username'],
                     'prename' => $data['prename'],
                     'lastname' => $data['lastname'],
-                    'password' => $data['password']
+                    'password' => hash('ripemd160',$data['password'])
                 ]
             );
             $response->getBody()->write("user has been inserted");

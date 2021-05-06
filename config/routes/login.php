@@ -23,7 +23,7 @@ return function (App $app) {
                    'password'
                 ],[
                     'username' => $data['username'],
-                    'password' => $data['password']
+                    'password' => hash('ripemd160',$data['password'])
                 ]
 
             );
