@@ -1,7 +1,6 @@
 # Slimedoo Task List
 
 
-- [] 
-- [] add Update routes in simillar fashion to insert with POST
-- [] choose an Frontend solution
+
+- [] choose an Frontend solution | thinkin about React or Electron
 - [] Hash current user ID and probably password

@@ -49,6 +49,8 @@ $container->set('session', function () {
 (require __DIR__ . '/routes/delete.php')($app);
 (require __DIR__ . '/routes/select.php')($app);
 (require __DIR__ . '/routes/login.php')($app);
+(require __DIR__ . '/routes/update.php')($app);
+
 // Register middleware
 (require __DIR__ . '/middleware.php')($app);
 
