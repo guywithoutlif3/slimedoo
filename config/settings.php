@@ -33,9 +33,10 @@ $settings['error'] = [
     // Display error details in error log
     'log_error_details' => true,
 ];
-
+/*
 $settings['session'] = [
     'name' => 'slimedoo',
     'cache_expire' => 0,
 ];
+*/
 return $settings;

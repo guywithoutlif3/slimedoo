@@ -9,6 +9,7 @@ use Slim\App;
 return function (App $app) {
     //routing to get all messages
     $app->get('/messages', function (ServerRequestInterface $request, ResponseInterface $response) {
+        
         $data = $this->get('database')->select('message', ['message', 'created', 'userIDfs']);
         $response->getBody()->write(json_encode($data));
         return $response;

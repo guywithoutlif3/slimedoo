@@ -11,6 +11,7 @@ return function (App $app) {
     
         
     $app->post('/login', function (ServerRequestInterface $request, ResponseInterface $response) {
+        $session =  new \SlimSession\Helper();
         //curl -X POST -F 'username=cptrio' -F 'password=verysecure' 'http://10.80.4.43/login'
         $data = $request->getParsedBody();
         if (isset($data['username']) && isset($data['password'])) {
@@ -26,14 +27,16 @@ return function (App $app) {
                 ]
 
             );
-            if(json_encode($check) != "[]"){
-                $encoded =json_encode($check);
-                //$dataarray = explode('"',$encoded);
-                $response->getBody()->write($encoded);
-                //$response->getBody()->write("Dataarray 3: ",$dataarray[3]);
-                var_dump($check[0]['userID']);
-                $this->get("session")->set ('user', $check[0]['userID']);
-                $response->getBody()->write("succes\n UserID for Session: ",  $this->get("session")->user);
+            if(!empty($check)){
+                var_dump($_SESSION);
+                var_dump($session->get("user"));
+                $response->getBody()->write(" Key: ".$session->get("user"));
+                $session->set('user', $check[0]["userID"]);
+                $exists = $session->exists('user');
+                if($exists = true){
+                    $response->getBody()->write("\n Exists but empty af\n");
+                }
+                $response->getBody()->write("succes\n ",);
 
             }else{
                 $response->getBody()->write("no succes");

@@ -1,5 +1,7 @@
 # Slimedoo Task List
 
 
-- [] Replace Odan/Sgit Session with https://github.com/bryanjhv/slim-session
+- [] 
 - [] add Update routes in simillar fashion to insert with POST
+- [] choose an Frontend solution
+- [] Hash current user ID and probably password
