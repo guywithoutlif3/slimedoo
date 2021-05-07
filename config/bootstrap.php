@@ -31,7 +31,7 @@ $container->set('database', function () {
 $app = $container->get(App::class);
 $app->add(
     new \Slim\Middleware\Session([
-      'name' => 'session',
+      'name' => 'worked',
       'autorefresh' => true,
       'lifetime' => '1 hour',
     ])

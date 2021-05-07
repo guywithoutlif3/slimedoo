@@ -16,7 +16,7 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <form action="/login" method="POST">
+        <form action="login" method="POST">
             <label for="username">username:</label><br>
             <input type="text" id="username" name="username" ><br>
             <label for="password">password:</label><br>
