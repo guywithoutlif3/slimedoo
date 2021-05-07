@@ -1,10 +1,12 @@
 <template>
-  <form class="Login">
-    <label for="username">username: </label><br />
+  <form  action="/" class="Login">
+    <h1>Login</h1>
+    <label class="content" for="username">username: </label><br />
     <input v-model="username" id="username" name="username" /><br />
-    <label for="password">password: </label><br />
+    <label class="content" for="password">password: </label><br />
     <input v-model="password" id="password" name="password" /><br /><br />
     <input @click="login" type="submit" value="Submit" />
+ 
   </form>
 </template>   
 <script>
@@ -22,9 +24,10 @@ export default {
     },
     login: function (event) {
       event.preventDefault();
+   
       // document.write("<h1>",this.password," ",this.username,"</h1>")
       let url = "/login";
-
+      var obj;
       fetch(url, {
         method: "POST",
         headers: {
@@ -34,13 +37,24 @@ export default {
           username: this.username,
           password: this.password,
         }),
-      }).catch(function (error) {
-        console.log(error);
-      });
+      })
+        .then((res) => res.json())
+        .then((data) => (obj = data))
+        .then(() => sessionStorage.setItem("key",obj))
+        .catch(function (error) {
+          console.log(error);
+        });
+      
     },
   },
 };
 </script>
 
 <style scoped>
+form {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  border: 5px solid red;
+}
 </style>

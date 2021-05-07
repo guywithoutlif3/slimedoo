@@ -33,19 +33,17 @@ return function (App $app) {
                 //var_dump($session->get("user"));
                 
                 $session->set('user', $check[0]["userID"]);
-                $response->getBody()->write("Test");
-                $response->getBody()->write($session->get("user"));
+                //$response->getBody()->write("Test");
+                //$response->getBody()->write($session->get("user"));
                 $exists = $session->exists('user');
-                if ($exists = true) {
-                    $response->getBody()->write("\n Exists but empty af\n");
-                }
-                $response->getBody()->write(json_encode(var_dump($_SESSION)));
+               
+                $response->getBody()->write(json_encode($session->get('user')));
             } else {
-                $response->getBody()->write("no succes");
+                $response->getBody()->write(json_encode("missing input"));
             }
         } else {
             var_dump($data);
-            $response->getBody()->write("im missing smt");
+            $response->getBody()->write(json_encode("not succeful"));
         }
         return $response;
     });
