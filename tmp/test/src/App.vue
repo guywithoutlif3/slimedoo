@@ -2,22 +2,27 @@
 
 <template>
   <div id="App">
-    <div>
-      <h1>If-Else-Test 1</h1>
-
+  
+     <Register v-if="RegisterClick == true  "/>
+     <div v-else>
+         <div>
       <body v-if="Logged">
         if true display this
       </body>
-      <Login v-else />
-      <h3>status: {{ Logged }}</h3>
+  
+      <Login v-else-if="RegisterClick == false"    />
+  
+      <h3>status: {{ Logged }} </h3>
       <h3>User: {{ LogID }}</h3>
     </div>
+     </div>
   </div>
 </template>                                         
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
 import Login from "./components/Login.vue";
+import Register from "./components/Register.vue";
 // import Vue from 'vue'
 import { store, mutations } from "./store";
 
@@ -25,11 +30,12 @@ export default {
   name: "App",
   components: {
     Login,
+    Register,
   },
   // props: {
   //   isLogged: { type: Boolean, required: false },
   //   LogID: { type: Number, required: false }
-  // },  
+  // },
   // data: function () {
   //   return {
   //     Logged: this.getLogID(),
@@ -37,25 +43,52 @@ export default {
   //   };
   // },
   created: function () {
-   // this.setLogID(0);
- //   this.toggleNavbar();
-//TODO: put fetch here for intial values
-  }, 
+    // this.setLogID(return of fetch);
+    //   this.toggleNavbar();
+    //TODO: put fetch here for intial values
+    //3
+    //    let url = "/login";
+    //    fetch(url, {
+    //      method: "POST",
+    //      headers: {
+    //        "Content-Type": "application/json",
+    //      },
+    //      body: JSON.stringify({
+    //        username: this.username,
+    //        password: this.password,
+    //      }),
+    //    })
+    //      .then((res) => res.json())
+    //      .then((obj) => this.$store.set("LogID", obj))
+    //      .catch(function (error) {
+    //        console.log(error);
+    //     });
+    //if (store.LogID  !== null) {
+    //  store.Logged = false;
+    //  store.LogID = 13;
+    //}
+  },
   methods: {
     toggleLogged() {
       mutations.toggleLogged();
     },
     setLogID(value) {
       mutations.setLogID(value);
-    }
+    },
   },
   computed: {
-    Logged: function() {
+    Logged: function () {
       return store.Logged;
     },
-    LogID: function() {
+    LogID: function () {
       return store.LogID;
-    }
+    },
+    RegisterClick: function () {
+      return store.RegisterClick;
+    },
+    LoginFalse: function () {
+      return store.RegisterClick;
+    },
   },
 };
 </script>

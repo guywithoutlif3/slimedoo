@@ -10,6 +10,8 @@ Vue.use(store);
 Vue.use(mutations);
 
 new Vue({
+  mutations,
+  store,
   render: h => h(App),
   // $store: $store,
 }).$mount('#app')
