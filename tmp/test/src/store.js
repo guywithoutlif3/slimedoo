@@ -5,6 +5,7 @@ export const store = Vue.observable({
   Logged: false,
   Test: true,
   RegisterClick: false,
+  ClickedChat: null,
 });
 
 export const mutations = {
@@ -17,4 +18,7 @@ export const mutations = {
   setRegisterClick(id){
     store.RegisterClick = id;
   },
+  setClickedChat(id){
+    store.ClickedChat = id;
+  }
 };

@@ -1,25 +1,31 @@
 <template>
+<div>
+  <img src="../assets/logo.png">
+  <div id="emptySqure"></div>
   <form action="/" class="Register">
+   <div id="wrappContent">
     <h1>Register</h1>
-    <label class="content" for="username">username: </label><br />
-    <input v-model="username" id="username" name="username" required /><br />
 
-    <label class="content" for="prename" >prename: </label><br />
-    <input v-model="prename" id="prename" name="prename" required /><br /><br />
+    <input v-model="username" id="username" name="username" placeholder="username" required />
 
-    <label class="content" for="lastname">lastname: </label><br />
-    <input v-model="lastname" id="lastname" name="lastname" required /><br /><br />
+ 
+    <input v-model="prename" id="prename" name="prename" placeholder="username" required />
 
-    <label class="content" for="password">password: </label><br />
-    <input v-model="password" id="password" name="password" required /><br /><br />
+ 
+    <input v-model="lastname" id="lastname" name="lastname" placeholder="lastname" required />
 
-    <input @click="register" type="submit" value="Submit" />
+ 
+    <input v-model="password"  type="password" name="password"  placeholder="password" required />
+   </div>
+    <div id="buttonWrapper">
+    <input @click="register" id="login" type="submit" value="Submit" />
 
-    <label> Back to Login </label>
-    <button @click="switchTo"></button>
-
+   
+    <button class="inline" @click="switchTo"> Back to Login</button>
+    </div>
 
   </form>
+  </div>
 </template>   
 <script>
 // import Vue from 'vue'
@@ -69,10 +75,56 @@ export default {
 </script>
 
 <style scoped>
-form {
-  width: 100%;
-  height: 100%;
-  display: inline-block;
-  border: 5px solid red;
+h1{
+  position: relative;
+  font-family: Copperplate, "Copperplate Gothic Light", 
+  fantasy; font-size: 50px;
+  text-align: center;
+  margin: 0%;
 }
+form {
+
+  width: 20%;
+  height: 20%;
+  padding: 20px;
+  background-color: #bbebfa;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+#wrappContent {
+  
+  text-align: center;
+  margin: 15px;
+}
+input {
+  text-align: center;
+}
+#emptySqure {
+  overflow: auto;
+  position: absolute;
+  height: 25%;
+  width: 20%;
+  background-color: #ffc145;
+  top: 35%;
+
+
+  right: 37.5%;
+  margin: auto;
+}
+
+.inline,
+#login {
+  background-color: #ffc145;
+  flex: 50%;
+  box-shadow: 0 0 0 1px black;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  margin: 0 15px;
+}
+
 </style>

@@ -9,6 +9,7 @@ import { store, mutations } from "./store";
 Vue.use(store);
 Vue.use(mutations);
 
+
 new Vue({
   mutations,
   store,

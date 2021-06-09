@@ -1,38 +1,50 @@
 
 
 <template>
-  <div id="App">
+  <div id="App" >
   
-     <Register v-if="RegisterClick == true  "/>
+     <Register v-if="RegisterClick == true"   />
      <div v-else>
          <div>
       <body v-if="Logged">
-        if true display this
+
+        <Sidebar />
+        <Chat  v-if="clickedChat !== null" />
       </body>
   
       <Login v-else-if="RegisterClick == false"    />
-  
+     
       <h3>status: {{ Logged }} </h3>
-      <h3>User: {{ LogID }}</h3>
+      <h3>User: {{ LogID }}</h3> 
+  
     </div>
      </div>
+      
   </div>
+
 </template>                                         
 
 <script>
+
 //import HelloWorld from './components/HelloWorld.vue'
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
+import Sidebar from "./components/Sidebar.vue";
+import Chat from "./components/Chat.vue";
 // import Vue from 'vue'
 import { store, mutations } from "./store";
+
 
 export default {
   name: "App",
   components: {
     Login,
     Register,
+    Sidebar,
+    Chat
   },
-  // props: {
+ 
+     // props: {
   //   isLogged: { type: Boolean, required: false },
   //   LogID: { type: Number, required: false }
   // },
@@ -89,11 +101,17 @@ export default {
     LoginFalse: function () {
       return store.RegisterClick;
     },
+    clickedChat: function (){
+      return store.ClickedChat;
+    }
   },
 };
 </script>
 
 <style>
+body{
+  background: #396795;
+}
 template {
   text-align: center;
 }
