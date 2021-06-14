@@ -8,7 +8,8 @@ use Slim\App;
 
 return function (App $app) {
 
-   
+   //my first random route for testing and playing around with API
+   //Yes its an Hello World :D
     $app->get('/', function (
         ServerRequestInterface $request,
         ResponseInterface $response

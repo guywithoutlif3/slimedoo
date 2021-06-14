@@ -1,3 +1,4 @@
 # Slimedoo Task List
 
-- [] choose an Frontend solution | thinkin about React or Electron
+- [] 
+- [] Try to always comment my code and comment EVERYTHING

@@ -1,12 +1,15 @@
-<template>
+<template> 
   <div id="Sidebar">
+    <!---Form which is reponsible for adding user to Friendlist-->
     <form action="/" class="Sidebar">
+    <!---Input field for username input binded to input in data-->
       <input
         v-model="input"
         placeholder="type Username"
         id="input"
         name="input"
       /><br />
+      <!--- button calls addFriend for adding a friend aswell as load friends to keep rendering in sync with db -->
       <button
         id="add"
         v-on:click.prevent="
@@ -19,13 +22,19 @@
         Add
       </button>
     </form>
+    <!-- li with for inside that lists all Friends from friends object an sets the key to iterate thru to the FriendID-->
     <li
       style="list-style-type: none"
       v-for="friend in friends"
       :key="friend.FriendID"
     >
+  <!-- here a form with a button inside gets generated for each user on Friendlist ... --> 
       <form class="userAddbutton">
-        <button v-on:click.prevent="chatClick(friend.username)" class="userButton" style="margin: 10px">
+        <button
+          v-on:click.prevent="chatClick(friend.FriendID)"
+          class="userButton"
+          style="margin: 10px"
+        > <!-- ... and runs chatClick method aswell as preventing default event -->
           {{ friend.username }}
         </button>
       </form>
@@ -45,19 +54,21 @@ export default {
     };
   },
   methods: {
+    //async fetch method which fetches all Friends and saves them in friends object
     async loadFriends() {
       const response = await fetch("/friends/all");
       const friends = await response.json();
       this.friends = friends;
     },
+    //async fetch post method which adds friend
     async addFriend() {
-      //we need to fetch /friends/{username}
+      //we need to fetch /friends/{username} for the route that checks existance
       let url = "/friends/" + this.input;
       const response1 = await fetch(url);
       const friend = await response1.json();
       this.friendAdd = friend;
-      //console.log(this.friendAdd["0"].userID);
-
+      
+      //second fetch to actually add to friendlist
       let url1 = "/friendlist/add";
       fetch(url1, {
         method: "POST",
@@ -72,26 +83,25 @@ export default {
         console.log(error);
       });
 
-      this.loadFriends();
+      this.loadFriends(); // loads friends to keep rendered same as db
     },
-    chatClick: function(username){
-
-      //function sets the Chat that was clicked on with username and loads component or smt like that:
+    //function sets the Chat that was clicked on with username and loads component
+    chatClick: function (username) {
+      
       store.ClickedChat = username;
-
-    }
+    },
   },
   created() {
     this.loadFriends();
   },
 };
 </script>
-
+<!-- TODO: ugly css please make responsive -->
 <style scoped>
 .userButton {
   width: 80%;
   height: 100%;
-  font-family: Copperplate, "Copperplate Gothic Light", fantasy; 
+  font-family: Copperplate, "Copperplate Gothic Light", fantasy;
   font-size: 24px;
   color: #ffc145;
   background-color: #396795;

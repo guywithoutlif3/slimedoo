@@ -6,6 +6,7 @@ export const store = Vue.observable({
   Test: true,
   RegisterClick: false,
   ClickedChat: null,
+  
 });
 
 export const mutations = {
