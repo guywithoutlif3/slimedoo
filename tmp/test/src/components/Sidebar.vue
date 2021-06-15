@@ -1,49 +1,62 @@
-<template> 
+<template>
   <div id="Sidebar">
-    <!---Form which is reponsible for adding user to Friendlist-->
-    <form action="/" class="Sidebar">
-    <!---Input field for username input binded to input in data-->
-      <input
-        v-model="input"
-        placeholder="type Username"
-        id="input"
-        name="input"
-      /><br />
-      <!--- button calls addFriend for adding a friend aswell as load friends to keep rendering in sync with db -->
-      <button
-        id="add"
-        v-on:click.prevent="
-          addFriend();
-          loadFriends();
-        "
-        type="submit"
-        value="Submit"
-      >
-        Add
-      </button>
-    </form>
-    <!-- li with for inside that lists all Friends from friends object an sets the key to iterate thru to the FriendID-->
-    <li
-      style="list-style-type: none"
-      v-for="friend in friends"
-      :key="friend.FriendID"
-    >
-  <!-- here a form with a button inside gets generated for each user on Friendlist ... --> 
-      <form class="userAddbutton">
+    <Profile v-if="IfProfileClick == true"/>
+    <div v-if="IfProfileClick == false">
+      <!---Form which is reponsible for adding user to Friendlist-->
+      <form action="/" class="Sidebar">
+        <!---Input field for username input binded to input in data-->
+        <input
+          v-model="input"
+          placeholder="type Username"
+          id="input"
+          name="input"
+        /><br />
+        <!--- button calls addFriend for adding a friend aswell as load friends to keep rendering in sync with db -->
         <button
-          v-on:click.prevent="chatClick(friend.FriendID)"
-          class="userButton"
-          style="margin: 10px"
-        > <!-- ... and runs chatClick method aswell as preventing default event -->
-          {{ friend.username }}
+          id="add"
+          v-on:click.prevent="
+            addFriend();
+            loadFriends();
+          "
+          type="submit"
+          value="Submit"
+        >
+          Add
         </button>
       </form>
-    </li>
+      <!-- li with for inside that lists all Friends from friends object an sets the key to iterate thru to the FriendID-->
+      <form class="userAddbutton">
+      <button class="inline" v-on:click.prevent="ProfileClick()">My Profile</button>
+      </form>
+      <li
+        style="list-style-type: none"
+        v-for="friend in friends"
+        :key="friend.FriendID"
+      >
+        <!-- here a form with a button inside gets generated for each user on Friendlist ... -->
+        <form class="userAddbutton" style="font-size: 4vw">
+          <button
+            v-on:click.prevent="chatClick(friend.username, friend.FriendID)"
+            class="userButton"
+            style="margin: 10px"
+          >
+            <!-- ... and runs chatClick method aswell as preventing default event -->
+            {{ friend.username }}
+          </button>
+        </form>
+      </li>
+      
+    </div>
+    
   </div>
 </template>   
 <script>
+import Profile from "./Profile.vue";
 import { store } from "./../store";
 export default {
+  components: {
+    Profile,
+  },
   name: "Sidebar",
 
   data: function () {
@@ -51,9 +64,18 @@ export default {
       input: "",
       friends: null,
       friendAdd: null,
+      
     };
   },
+  computed: {
+    IfProfileClick: function () {
+      return store.IfProfileClick;
+    }
+  },
   methods: {
+    ProfileClick() {
+      store.IfProfileClick = true;
+    },
     //async fetch method which fetches all Friends and saves them in friends object
     async loadFriends() {
       const response = await fetch("/friends/all");
@@ -67,7 +89,7 @@ export default {
       const response1 = await fetch(url);
       const friend = await response1.json();
       this.friendAdd = friend;
-      
+
       //second fetch to actually add to friendlist
       let url1 = "/friendlist/add";
       fetch(url1, {
@@ -86,9 +108,9 @@ export default {
       this.loadFriends(); // loads friends to keep rendered same as db
     },
     //function sets the Chat that was clicked on with username and loads component
-    chatClick: function (username) {
-      
-      store.ClickedChat = username;
+    chatClick: function (username, id) {
+      store.ClickedChatUsername = username;
+      store.ClickedChat = id;
     },
   },
   created() {
@@ -98,6 +120,19 @@ export default {
 </script>
 <!-- TODO: ugly css please make responsive -->
 <style scoped>
+.inline{
+
+  width: 80%;
+  height: 100%;
+  font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+  font-size: 24px;
+  color:  #396795;
+  background-color:#ffc145 ;
+  flex: 50%;
+  box-shadow: 0 0 0 1px black;
+  margin-bottom: 10px;
+  margin: 0 15px;
+}
 .userButton {
   width: 80%;
   height: 100%;

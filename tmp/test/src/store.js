@@ -6,7 +6,8 @@ export const store = Vue.observable({
   Test: true,
   RegisterClick: false,
   ClickedChat: null,
-  
+  ClickedChatUsername: null,
+  IfProfileClick: false,
 });
 
 export const mutations = {
@@ -21,5 +22,11 @@ export const mutations = {
   },
   setClickedChat(id){
     store.ClickedChat = id;
+  },
+  setClickedChatUsername(id){
+    store.ClickedChatUsername = id;
+  },
+  setIfProfileClick(id){
+    store.ifProfileClick = id;
   }
 };

@@ -9,6 +9,7 @@
         <body v-if="Logged"> <!-- If login was succeful display evertyhing in Body -->
           <Sidebar /> <!-- display Sidebar with no condtion -->
           <Chat v-if="clickedChat !== null" /> <!--As soon as a User is Clicked display Chat-->
+        
         </body>
 
         <Login v-else-if="RegisterClick == false" />  <!-- If Register Click is false the login button is pressed in register -->
@@ -32,7 +33,7 @@ export default {
     Login,
     Register,
     Sidebar,
-    Chat,
+    Chat
   },
   created: function () {
   },

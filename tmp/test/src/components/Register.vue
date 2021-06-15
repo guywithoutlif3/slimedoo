@@ -1,30 +1,49 @@
 <template>
-<div>
-  <img src="../assets/logo.png">
-  <div id="emptySqure"></div>
-  <form action="/" class="Register">
-   <div id="wrappContent">
-    <h1>Register</h1>
+  <div>
+    <img src="../assets/logo.png" />
+    <div id="emptySqure"></div>
+    <form action="/" class="Register">
+      <div id="wrappContent">
+        <h1>Register</h1>
 
-    <input v-model="username" id="username" name="username" placeholder="username" required />
+        <input
+          v-model="username"
+          id="username"
+          name="username"
+          placeholder="username"
+          required
+        />
 
- 
-    <input v-model="prename" id="prename" name="prename" placeholder="username" required />
+        <input
+          v-model="prename"
+          id="prename"
+          name="prename"
+          placeholder="prename"
+          required
+        />
 
- 
-    <input v-model="lastname" id="lastname" name="lastname" placeholder="lastname" required />
+        <input
+          v-model="lastname"
+          id="lastname"
+          name="lastname"
+          placeholder="lastname"
+          required
+        />
 
- 
-    <input v-model="password"  type="password" name="password"  placeholder="password" required />
-   </div>
-    <div id="buttonWrapper">
-    <input @click="register" id="login" type="submit" value="Submit" />
-
-   
-    <button class="inline" @click="switchTo"> Back to Login</button>
-    </div>
-
-  </form>
+        <input
+          v-model="password"
+          type="password"
+          name="password"
+          placeholder="password"
+          required
+        />
+      </div>
+      <div id="buttonWrapper">
+        <input v-on:click.prevent="clearcheck();register();" id="login" type="submit" value="Submit" />
+        <button class="inline" @click="switchTo">Back to Login</button>
+        <p>{{error}}</p>
+      </div>
+    </form>
   </div>
 </template>   
 <script>
@@ -40,18 +59,24 @@ export default {
       prename: "",
       lastname: "",
       password: "",
+      check: [],
+      error: "",
     };
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
     switchTo: function (event) {
       event.preventDefault();
       store.RegisterClick = false;
     },
-    register: function (event) {
-      event.preventDefault();
+    async register() {
+     
+      
+      let url1 = "/friends/" + this.username;
+      const response1 = await fetch(url1);
+      const friend = await response1.json();
+      this.check = friend;
+      if(this.check == [] || this.check == "" || Object.keys(this.check).length === 0 && this.check.constructor === Object){
       let url = "/users/add";
       fetch(url, {
         method: "POST",
@@ -65,25 +90,30 @@ export default {
           password: this.password,
         }),
       })
-      .then(store.RegisterClick = false)
-      .catch(function (error) {
-        console.log(error);
-      });
+        .then((store.RegisterClick = false))
+        .catch(function (error) {
+          console.log(error);
+        });
+        }else{
+          this.error = "user already exists please choose other username";
+        }
     },
+    clearcheck: function(){
+      this.check = [];
+    }
   },
 };
 </script>
 
 <style scoped>
-h1{
+h1 {
   position: relative;
-  font-family: Copperplate, "Copperplate Gothic Light", 
-  fantasy; font-size: 50px;
+  font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+  font-size: 50px;
   text-align: center;
   margin: 0%;
 }
 form {
-
   width: 20%;
   height: 20%;
   padding: 20px;
@@ -97,7 +127,6 @@ form {
   margin: auto;
 }
 #wrappContent {
-  
   text-align: center;
   margin: 15px;
 }
@@ -112,7 +141,6 @@ input {
   background-color: #ffc145;
   top: 35%;
 
-
   right: 37.5%;
   margin: auto;
 }
@@ -126,5 +154,4 @@ input {
   border-radius: 15px;
   margin: 0 15px;
 }
-
 </style>
