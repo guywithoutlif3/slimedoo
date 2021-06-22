@@ -1,7 +1,9 @@
 
 
 <template>
+
   <div id="App">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- checks with vue if for clicking of Regiser button-->
     <Register v-if="RegisterClick == true" />
     <div v-else>
@@ -66,6 +68,7 @@ export default {
 </script>
 
 <style>
+
 body {
   background: #396795;
 }
@@ -80,4 +83,5 @@ template {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 </style>

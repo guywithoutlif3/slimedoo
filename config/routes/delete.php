@@ -10,16 +10,15 @@ use Slim\App;
 return function (App $app) {
 
     //routing which is responsible for the deleting of users either with ID or username (foreign key is on cascading so it deletes also all coresponding messages) 
-    $app->get('/users/delete/{parameter}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) { //takes a parameter for deleting with {}
-        $parameter = $args['parameter']; //saves parameter 
+    $app->get('/users/delete', function (ServerRequestInterface $request, ResponseInterface $response, array $args) { //takes a parameter for deleting with {}
+        $session =  new \SlimSession\Helper();
+        $userid = $session->get("user");
 
-        $this->get('database')->delete("user", [ //medoo Syntax with paramter as values
-            'OR' => [
-                'userID' => $parameter,
-                'username' => $parameter
-            ]
-        ]);
-    $response->getBody()->write("user: $parameter has been deleted"); //for testing
+        $this->get('database')->delete("user",  //medoo Syntax with paramter as values
+             [
+                'userID' => $userid,
+             ]);
+    $response->getBody()->write("user has been deleted"); //for testing
         return $response;
     });
     //routing which is responsible for the deleting of messages with id of message used as parameter (All messages)

@@ -55,31 +55,19 @@ $app->get('/messages/LoggedIn/{recieverID}', function (ServerRequestInterface $r
     return $response;
 
 });
-
-
-    /*
-    // outdated routing because new approach
-    //routing to get all messages sent from a user with the userIDfs
-    $app->get('/messages/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
-
-        $userid = $args['id'];
-        $data = $this->get('database')->select( //medoo sytnax to get all the messages with the parameter value
-            'message',
-            [
-                'message',
-                'created',
-                'userIDfs'
-            ],
-            [
-                'userIDfs' => $userid
-            ]
-        );
-        $response->getBody()->write(json_encode($data));
-        return $response;
-    });*/
     //routing to get all users
     $app->get('/users', function (ServerRequestInterface $request, ResponseInterface $response) {
         $data = $this->get('database')->select('user', ['username', 'prename', 'lastname', 'password']);
+        $response->getBody()->write(json_encode($data));
+        return $response;
+    });
+    //routing to get infos for currently Logged in userf
+    $app->get('/users/LoggedIn', function (ServerRequestInterface $request, ResponseInterface $response) {
+        $session =  new \SlimSession\Helper();
+        $userid = $session->get("user");
+        $data = $this->get('database')->select('user', ['username', 'prename', 'lastname', 'password'],[
+            'userID' => $userid
+        ]);
         $response->getBody()->write(json_encode($data));
         return $response;
     });
@@ -110,6 +98,16 @@ $app->get('/messages/LoggedIn/{recieverID}', function (ServerRequestInterface $r
             ]
         );*/
        
+    });
+    $app->get('/friends/allReverse', function (ServerRequestInterface $request, ResponseInterface $response) {
+        $session =  new \SlimSession\Helper();
+        $userid = $session->get("user");
+        $data = $this->get('database')->query("SELECT userID_fs AS FriendID, user.username
+        FROM friendlist
+        LEFT JOIN user ON friendlist.userID_fs=user.userID WHERE FriendID = $userid;")->fetchAll();
+         $response->getBody()->write(json_encode($data));
+         return $response;
+        
     });
 
 //routing for resolving username with 

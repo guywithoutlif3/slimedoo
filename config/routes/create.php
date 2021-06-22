@@ -12,7 +12,7 @@ return function (App $app) {
     $app->post('/messages/add', function (ServerRequestInterface $request, ResponseInterface $response) {
         // Testing with curl:   curl -X POST -F 'userid=1' -F 'message=Hallo Welt' 'http://10.80.4.43/messages/add'
         $data = $request->getParsedBody(); //gets an Array of all the Values like: userid message and so on
-        if (isset($data['userIDfs']) && isset($data['message']) && isset($data['userIDfs'])&& isset($data['recieverID'])) { //checks if all the important values are set
+        if (isset($data['userIDfs']) && isset($data['message']) && $data['message'] != "" && isset($data['userIDfs'])&& isset($data['recieverID'])) { //checks if all the important values are set
             $this->get('database')->insert( //Medoo Syntax for the insert of SQL with the two values we tested and the time at the Moment
                 'message',
                 [

@@ -1,33 +1,33 @@
 <template>
   <div>
-    
-    <img src="../assets/logo.png">
-       <div id="emptySqure"></div>
-    <form action="/" class="Login">
- 
-      <div id="wrappContent">
-        <h1>Login</h1>
-        <input
-          v-model="username"
-          class="username"
-          name="username"
-          placeholder="Username: "
-        /><br />
-        <input
-          type="password"
-          v-model="password"
-          class="password"
-          name="password"
-          placeholder="Password: "
-        /><br /><br />
-        <div id="buttonWrapper">
-          <input @click="login" id="login" type="submit" value="Submit" />
-    
-          <button class="inline" @click="switchTo">Register</button>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <img src="../assets/logo.png" />
+    <div id="emptySqure"></div>
+    <div id="form">
+      <form action="/" class="Login">
+        <div id="wrappContent">
+          <h1>Login</h1>
+          <input
+            v-model="username"
+            class="username"
+            name="username"
+            placeholder="Username: "
+          /><br />
+          <input
+            type="password"
+            v-model="password"
+            class="password"
+            name="password"
+            placeholder="Password: "
+          /><br /><br />
+          <div id="buttonWrapper">
+            <input @click="login" id="login" type="submit" value="Submit" />
+
+            <button class="inline" @click="switchTo">Register</button>
+          </div>
         </div>
-          
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </template>   
 <script>
@@ -94,24 +94,23 @@ export default {
 </script>
 
 <style scoped>
-img{
+img {
   position: absolute;
   margin: 0%;
   padding: 0%;
   border: 0;
 }
-h1{
+h1 {
   position: relative;
-  font-family: Copperplate, "Copperplate Gothic Light", 
-  fantasy; font-size: 50px;
+  font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+  font-size: 2vw;
   text-align: center;
   margin: 0%;
 }
-form {
-  display: flex;
+#form {
   width: 20%;
   height: 20%;
-  padding: 20px;
+  padding: 1%;
   background-color: #bbebfa;
 
   position: absolute;
@@ -121,13 +120,17 @@ form {
   right: 0;
   margin: auto;
 }
+
 #wrappContent {
-  
   text-align: center;
   margin: 15px;
+  max-width: 100%;
+  max-height: 100%;
 }
 input {
   text-align: center;
+  max-width: 100%;
+  max-height: 100%;
 }
 #emptySqure {
   overflow: auto;
@@ -137,22 +140,32 @@ input {
   background-color: #ffc145;
   top: 35%;
 
-
   right: 37.5%;
   margin: auto;
 }
 
 .inline,
 #login {
+  position: relative;
   background-color: #ffc145;
   flex: 50%;
+  max-height: 100%;
+  max-width: 100%;
   box-shadow: 0 0 0 1px black;
   margin-bottom: 10px;
   border-radius: 15px;
   margin: 0 15px;
 }
-#buttonWrapper {
-  display: flex;
-  padding: 0 75px;
+@media only screen and (max-width: 706px) {
+  .inline,
+  #login {
+    position: relative;
+    background-color: #ffc145;
+    box-shadow: 0 0 0 1px black;
+
+    margin-bottom: 10px;
+    border-radius: 15px;
+    margin: 0 15px;
+  }
 }
 </style>

@@ -8,18 +8,20 @@ use Slim\App;
 //all routes to Update are here :D
 return function (App $app) {
     //route with the usage of editing a username of the currently logged in user
-    $app->post('/users/update/username', function (ServerRequestInterface $request, ResponseInterface $response) {
+    $app->post('/users/update/user', function (ServerRequestInterface $request, ResponseInterface $response) {
 
         $session =  new \SlimSession\Helper();
         $user = $session->get("user");
         $data = $request->getParsedBody();
 
 
-        if (isset($data['username']) && strlen($data['username']) > 0) { // validate and check if values set
+        if (isset($data['username']) && strlen($data['username']) > 0 && isset($data['prename']) && strlen($data['prename']) > 0 && isset($data['lastname']) && strlen($data['lastname']) > 0) { // validate and check if values set
             $this->get('database')->update(
                 'user',
                 [
-                    'username' => htmlspecialchars($data['username']) //Use new Username thats checked and validated to update
+                    'username' => htmlspecialchars($data['username']), //Use new Username thats checked and validated to update
+                    'prename' =>  htmlspecialchars($data['prename']),
+                    'lastname' =>  htmlspecialchars($data['lastname'])
                             
                 ],
                 [

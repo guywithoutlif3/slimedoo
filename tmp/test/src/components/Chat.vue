@@ -1,6 +1,16 @@
 <template>
   <div id="Chat">
-    <h1 style="font-family: Copperplate, 'Copperplate Gothic Light', fantasy; text-align: center;">  <b style="background-color: #ffc145 "> You </b>are Chatting with:  <b style="background-color: #bbebfa ">{{ clickedChatUsername }}</b> </h1>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <h1
+      style="
+        font-family: Copperplate, 'Copperplate Gothic Light', fantasy;
+        text-align: center;
+      "
+    >
+      <b style="background-color: #ffc145"> You </b>are Chatting with:
+      <b style="background-color: #bbebfa">{{ clickedChatUsername }}</b>
+      <p style="font-size: 25px">Chatting since: {{ createdChat }}</p>
+    </h1>
     <!--- The list Tag here has a vue for loop insides that loads all messages from data messages and assigns the key to loop thru to the messageID -->
     <li
       style="list-style-type: none"
@@ -11,7 +21,15 @@
       <!--- Deffentetly not best solution but it work -->
       <!--- styline option 1 -->
       <div style="margin-bottom: 20px" v-if="message.userIDfs == LogID">
-        <p style="padding: 8px;float: left; background-color: #ffc145; margin: 0 0 0 10%">
+        <p
+          style="
+            padding: 8px;
+            float: left;
+            background-color: #ffc145;
+            margin: 0 0 0 10%;
+            border-radius: 7px;
+          "
+        >
           {{ message.message }}
         </p>
         <br />
@@ -21,7 +39,15 @@
         style="margin-bottom: 20px"
         v-else-if="message.userIDfs == clickedChat"
       >
-        <p style="padding: 8px;float: right; background-color: #bbebfa; margin: 0 10% 0 0">
+        <p
+          style="
+            padding: 8px;
+            float: right;
+            background-color: #bbebfa;
+            margin: 0 10% 0 0;
+            border-radius: 5px;
+          "
+        >
           {{ message.message }}
         </p>
         <br />
@@ -30,6 +56,7 @@
     <!--- this is the Button for entering messages where the input is binded to the data input and the button runs the addMessage() method and prevents page reload -->
     <form class="messageAddButton">
       <input v-model="input" type="text" placeholder="Enter message" />
+      <p>{{ empty }}</p>
       <button v-on:click.prevent="addMessage()">send</button>
     </form>
   </div>
@@ -43,6 +70,8 @@ export default {
     return {
       input: "",
       messages: null, //object with all messages from loadChatArrays()
+      empty: " ",
+      createdChat: " never  ",
     };
   },
 
@@ -58,9 +87,9 @@ export default {
       let response1 = await fetch(
         "/messages/LoggedIn/" + store.ClickedChat + ""
       );
-      
+
       //this.messages = messages; //add messages sent to reciver to messages object
-      
+
       let messages1 = await response1.json(); //gets the reponse from second fetch
       messages = messages.concat(messages1);
       //this.messages = this.messages.concat(messages1); //merges the messages object and the results
@@ -71,26 +100,39 @@ export default {
           dateB = new Date(b.created);
         return dateA - dateB;
       });
+      if (this.messages == [] || this.messages === null || this.messages == null || this.messages == "") {
+        this.createdChat = " never ";
+      } else {
+        this.createdChat = this.messages["0"].created;
+      }
     },
 
     //async method to add a message
     async addMessage() {
-      let url1 = "/messages/add";
-      fetch(url1, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: this.input, //the input from the data gets used here for POST
-          userIDfs: store.LogID, // the currently Logged in User
-          recieverID: store.ClickedChat, //The reciver of the message
-        }),
-      }).catch(function (error) {
-        console.log(error);
-      });
+      this.empty = "";
+      if (this.input == "") {
+        this.empty = "sorry but message can't be emtpy";
+      }
+      {
+        let url1 = "/messages/add";
+        fetch(url1, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: this.input, //the input from the data gets used here for POST
+            userIDfs: store.LogID, // the currently Logged in User
+            recieverID: store.ClickedChat, //The reciver of the message
+          }),
+        }).catch(function (error) {
+          console.log(error);
+        });
 
-      this.loadChatArrays(); //runs the loading method again for displaying the new version of messages
+        this.loadChatArrays(); //runs the loading method again for displaying the new version of messages
+        this.input = " "
+      }
+      
     },
     //this method stops the AutoUpdate becuase if its not canceld it keeps running
     cancelAutoUpdate() {
@@ -100,6 +142,7 @@ export default {
     messagesClear: function () {
       this.messages = [];
     },
+  
   },
   computed: {
     LogID: function () {
@@ -112,14 +155,11 @@ export default {
       return store.ClickedChat;
     },
     clickedChatUsername: function () {
-
       return store.ClickedChatUsername;
-    }
+    },
   },
   created() {
     // Lifecyle hook on creating of component ....
-    
-
     this.loadChatArrays(); //...loads messages with clicked user aswell as...
     this.timer = setInterval(this.loadChatArrays, 500); // starting this constant interval of 2 seconds where every 2 seconds the messages ger reloaded. (not pretty but functional)
   },
@@ -129,8 +169,12 @@ export default {
   },
 };
 </script>
-<!-- TODO: ugly styling please make responsive-->
+<!-- ugly styling please make responsive-->
 <style scoped>
+form {
+  display: flex;
+  justify-content: center;
+}
 #Chat {
   background-color: #396795;
   position: fixed;

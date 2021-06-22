@@ -1,9 +1,10 @@
 <template>
   <div id="Sidebar">
-    <Profile v-if="IfProfileClick == true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <Profile v-if="IfProfileClick == true" />
     <div v-if="IfProfileClick == false">
       <!---Form which is reponsible for adding user to Friendlist-->
-      <form action="/" class="Sidebar">
+      <form action="/" class="UserAddForm">
         <!---Input field for username input binded to input in data-->
         <input
           v-model="input"
@@ -25,8 +26,10 @@
         </button>
       </form>
       <!-- li with for inside that lists all Friends from friends object an sets the key to iterate thru to the FriendID-->
-      <form class="userAddbutton">
-      <button class="inline" v-on:click.prevent="ProfileClick()">My Profile</button>
+      <form>
+        <button class="ProfileClick" v-on:click.prevent="ProfileClick()">
+          My Profile
+        </button>
       </form>
       <li
         style="list-style-type: none"
@@ -45,9 +48,7 @@
           </button>
         </form>
       </li>
-      
     </div>
-    
   </div>
 </template>   
 <script>
@@ -64,13 +65,14 @@ export default {
       input: "",
       friends: null,
       friendAdd: null,
-      
+      users: null,
+      friendsR: null,
     };
   },
   computed: {
     IfProfileClick: function () {
       return store.IfProfileClick;
-    }
+    },
   },
   methods: {
     ProfileClick() {
@@ -80,7 +82,20 @@ export default {
     async loadFriends() {
       const response = await fetch("/friends/all");
       const friends = await response.json();
-      this.friends = friends;
+
+      const response1 = await fetch("/friends/allReverse");
+      const friendsR = await response1.json();
+
+      let array1 = friends;
+      let array2 = friendsR;
+      let array3 = array1.concat(array2);
+      var dataArray = array3.map((item) => {
+        return [item.username, item];
+      }); // creates array of array
+      var maparr = new Map(dataArray); // create key value pair from array of array
+
+      var result = [...maparr.values()]; //converting back to array from mapobject
+      this.friends = result;
     },
     //async fetch post method which adds friend
     async addFriend() {
@@ -104,7 +119,7 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
-
+      this.input = "";
       this.loadFriends(); // loads friends to keep rendered same as db
     },
     //function sets the Chat that was clicked on with username and loads component
@@ -115,19 +130,24 @@ export default {
   },
   created() {
     this.loadFriends();
+     this.timer = setInterval(this.loadFriends, 500);
   },
 };
 </script>
 <!-- TODO: ugly css please make responsive -->
 <style scoped>
-.inline{
-
+form {
+  display: flex;
+  margin: 10px;
+}
+.ProfileClick {
+  flex-grow: 0.2;
   width: 80%;
   height: 100%;
   font-family: Copperplate, "Copperplate Gothic Light", fantasy;
-  font-size: 24px;
-  color:  #396795;
-  background-color:#ffc145 ;
+  font-size: 1.5vw;
+  color: #396795;
+  background-color: #ffc145;
   flex: 50%;
   box-shadow: 0 0 0 1px black;
   margin-bottom: 10px;
@@ -137,7 +157,7 @@ export default {
   width: 80%;
   height: 100%;
   font-family: Copperplate, "Copperplate Gothic Light", fantasy;
-  font-size: 24px;
+  font-size: 1.5vw;
   color: #ffc145;
   background-color: #396795;
   flex: 50%;
@@ -145,14 +165,11 @@ export default {
   margin-bottom: 10px;
   margin: 0 15px;
 }
-form {
-  display: flex;
-  margin: 10px;
-}
+
 #add {
   flex-grow: 0.2;
 }
-div {
+#Sidebar {
   background-color: #bbebfa;
   position: fixed;
   width: 15%;

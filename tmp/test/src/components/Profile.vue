@@ -29,8 +29,11 @@
       Change Password
     </button>
     <p style="font-size: 15px">{{ errorPassword }}{{ successPassword }}</p>
-
+    <button id="delete" v-on:click.prevent="DeleteAccount()">
+      Delete my account
+    </button>
     <button id="back" v-on:click.prevent="BackClick()">back</button>
+    <p>{{errorDelete}}</p>
   </div>
 </template>   
 <script>
@@ -51,6 +54,8 @@ export default {
       success: "",
       errorPassword: "",
       successPassword: "",
+
+      errorDelete: "",
       /* username: null,
         prename: null,
         lastname: null,*/
@@ -96,7 +101,7 @@ export default {
       this.successPassword = "";
       this.errorPassword = "";
       let url1 = "/users/update/password";
-      if (this.passwordInput === this.passwordrepeatInput) {
+      if (this.passwordInput === this.passwordrepeatInput && this.passwordInput !== "" && this.passwordInput != " " && this.passwordInput != null) {
         fetch(url1, {
           method: "POST",
           headers: {
@@ -110,7 +115,7 @@ export default {
         });
         this.successPassword = "Password has been changed :D";
       } else {
-        this.errorPassword = "the Passwords dont match";
+        this.errorPassword = "the Passwords dont match or you left something empty ";
       }
     },
     async loadProfile() {
@@ -123,6 +128,22 @@ export default {
     },
     BackClick() {
       store.IfProfileClick = false;
+    },
+    DeleteAccount() {
+
+      let check = prompt("Please type DELETE to delete your account:");
+      if (check == "DELETE") {
+        let url = "/users/delete";
+        fetch(url);
+
+       
+        //this.successDelete = del; //useless xD
+        location.reload();
+
+      } else {
+        this.errorDelete = "you typed Delete wrong or canceld";
+      }
+       
     },
   },
   computed: {
